@@ -139,10 +139,3 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 * GitHub: [@Sean-Pereira-945](https://www.google.com/search?q=https://github.com/Sean-Pereira-945)
 * LinkedIn: [Sean Pereira](https://www.google.com/search?q=https://linkedin.com/in/)
 
-*Project Link:* [https://github.com/Sean-Pereira-945/GradGuide_Job_Search_Tool](https://github.com/Sean-Pereira-945/GradGuide_Job_Search_Tool)
-
-```
-
-<FollowUp label="Would you like me to tailor the tech stack or add specific setup commands for Python/Flask, Docker, or React?" query="Can you help me customize the README for a specific tech stack like Python/Flask, React, or Docker?"/>
-
-```
