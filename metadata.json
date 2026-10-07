@@ -1,0 +1,6 @@
+{
+  "name": "GradGuide Job Discovery",
+  "description": "Real-time job discovery tool for international students with live HTML scraper, visa work-hour compliance planner, campus proximity matcher, and employer trust verification.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
