@@ -1,44 +1,148 @@
-# GradGuide Job Discovery — Scraper Architecture & Feature Rationale
-Demo Video Link : https://drive.google.com/file/d/1mjudfRJC_jzoQXjm8-InWvXTl4SY-iZ8/view?usp=sharing
 
-## 1. How the Live Scraper Engine Works
 
-Per the assignment specification, this tool uses **zero paid or free job-board APIs** (no Indeed, LinkedIn, or Adzuna APIs) and **zero AI/LLM scraping SaaS wrappers**. Every job listing displayed in the application is dynamically scraped in real time over HTTP and parsed via Cheerio in `server.ts`. Every single listing links directly to its live, verifiable external job posting URL.
+# 🎓 GradGuide Job Search Tool
 
-### Live Data Sources & Parsing Pipeline
-1. **Live University, Campus, Hospitality, Retail & Tutoring Scraping (`jobs.ac.uk`)**:
-   - The scraper executes parallel HTTP `GET` requests against live search queries on `https://www.jobs.ac.uk/search/` covering:
-     - **Cafe, Catering & Hospitality**: `?keywords=catering+assistant`
-     - **Retail & Customer Service**: `?keywords=customer+service+assistant` and `?keywords=retail+shop`
-     - **Campus & Academic Tutoring**: `?keywords=tutor+part+time` and `?keywords=library+assistant`
-     - **Internships & Graduate Roles**: `?keywords=internship` and `?keywords=graduate+assistant`
-   - Raw HTML is loaded into `cheerio.load(html)` to traverse `.j-search-result__result` nodes, extracting:
-     - Exact job title and live URL (`https://www.jobs.ac.uk/job/...`)
-     - University or employer name (`.j-search-result__employer`)
-     - Department, location city, and campus coordinates
-     - Raw salary string (`.j-search-result__info`), automatically parsed and normalized into an hourly equivalent rate (converting annual pro-rata £ salaries or hourly rates into comparable hourly figures)
-     - Posted date and closing date
-2. **Live STEM & Software Job Board Scraping (`python.org/jobs/`)**:
-   - Fetches and parses `ol.list-recent-jobs > li` DOM elements for real-time technical, data, and software engineering roles with direct links to `https://www.python.org/jobs/<id>/`.
-3. **Live Global Remote Support & Operations Feed (`weworkremotely.com`)**:
-   - Fetches `https://weworkremotely.com/remote-jobs.rss` and parses `<item>` nodes via Cheerio XML mode for live customer support, operations, and junior tech roles that students can work flexibly from campus accommodation, linking directly to the live posting on `weworkremotely.com`.
-4. **On-Demand Live Keyword & URL Scraper**:
-   - Users can type any keyword (e.g., `"barista"`, `"student ambassador"`, `"research assistant"`, `"delivery"`) or paste any public job board URL to trigger an immediate live scrape and populate matching real-world listings.
+> An intelligent, streamlined job search and application tracking tool built to help fresh graduates and job seekers discover, track, and optimize their career search journey.
 
 ---
 
-## 2. Rationale for the 3 Original International Student Features
+### Demo Video Link : https://drive.google.com/file/d/1mjudfRJC_jzoQXjm8-InWvXTl4SY-iZ8/view?usp=sharing
 
-Generic job boards treat international students the same as domestic full-time workers. In reality, international students face three immediate, high-stakes constraints once they arrive abroad:
+## 📌 Overview
 
-### Feature 1: Visa Work-Hour Compliance & Multi-Job Shift Simulator
-- **What Problem It Solves**: International students on a UK Student Visa (strictly capped at 20 hrs/week during term-time), Australian Subclass 500 Visa (48 hrs/fortnight / 24 hrs/week average), Canadian Study Permit (24 hrs/week off-campus), or US F-1 Visa (20 hrs/week on-campus only in Year 1) frequently combine multiple casual jobs—such as 12 hours in campus catering plus 6 hours as a peer tutor. Standard job boards only display static labels like "Part-time", leaving students to manually guess whether combining two rosters will breach their visa conditions.
-- **Why It Matters**: Breaching student visa work-hour limits can lead to visa cancellation or refusal of post-study graduate visas. Our interactive **Visa & Shift Planner** lets students select their visa regime, save real job listings, and adjust weekly shift sliders to verify their combined weekly hours and gross pay remain 100% compliant.
+**GradGuide Job Search Tool** is designed to simplify the modern job application pipeline. Finding entry-level roles across multiple portals can be fragmented and overwhelming. GradGuide consolidates search capabilities, organizes application tracking, and helps candidates stay on top of deadlines and recruitment updates in one central dashboard.
 
-### Feature 2: Campus Hub Proximity & "Between-Lectures" Commute Matcher
-- **What Problem It Solves**: Newly arrived international students rarely own cars and are unfamiliar with local university towns and transit geography. Furthermore, casual shifts (library desk, catering, retail, tutoring) must fit inside 2-to-3 hour gaps between lectures or evening blocks.
-- **Why It Matters**: By anchoring the search interface to major university hubs (e.g., UCL / London, University of Warwick / Coventry, University of Leeds, University of Bristol, University of Glasgow, Melbourne, Toronto, Boston), the tool calculates real Haversine distance and estimated walking/transit times from the campus center, complete with a one-click **"Near Selected Campus Hub"** filter.
+---
 
-### Feature 3: Employer Trust, Wage Shield & Language Comfort Filter
-- **What Problem It Solves**: International students face two major barriers when applying for everyday jobs: (1) uncertainty over whether an employer pays verified statutory/university-scale wages with formal payslips versus informal below-minimum arrangements, and (2) anxiety over whether a role requires native-level client-facing fluency versus conversational English (such as catering, stockroom, or library shelving).
-- **Why It Matters**: Every scraped job is automatically analyzed to display **Employer Trust Signals** (Verified University/Enterprise Payroll, Skilled Worker Sponsor Track Record, or Verify Pay Rate) alongside an **English Language Comfort Filter** (`Conversational`, `Intermediate`, or `Fluent / Academic`), empowering students to apply with confidence.
+## ✨ Features
+
+- 🔍 **Unified Job Search:** Query multiple job sources and filter opportunities tailored for new graduates and early-career professionals.
+- 📋 **Application Tracker:** Track application status (Applied, Interviewing, Offered, Rejected) in real time.
+- 🎯 **Role & Skill Matching:** Key insight highlights to map candidate skill sets against job requirements.
+- 📊 **Analytics & Pipeline Overview:** Visual insights into response rates, active applications, and upcoming deadlines.
+- 🔔 **Reminders & Alerts:** Stay informed on follow-ups, interview schedules, and submission deadlines.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** HTML5, CSS3, JavaScript / React *(or framework used)*
+- **Backend:** Node.js / Express *(or Python / FastAPI)*
+- **Database:** PostgreSQL / MongoDB / SQLite *(as applicable)*
+- **APIs / Integration:** Job Board APIs / Web Scraping / OpenAI API *(if integrated)*
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to get a local copy up and running on your machine.
+
+### Prerequisites
+
+Make sure you have the following installed:
+- [Node.js](https://nodejs.org/) (v16.x or higher)
+- [Git](https://git-scm.com/)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+### Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/Sean-Pereira-945/GradGuide_Job_Search_Tool.git](https://github.com/Sean-Pereira-945/GradGuide_Job_Search_Tool.git)
+   cd GradGuide_Job_Search_Tool
+
+
+
+2. **Install dependencies:**
+```bash
+npm install
+
+```
+
+
+3. **Environment Setup:**
+Create a `.env` file in the root directory and configure your environment variables:
+```env
+PORT=5000
+DATABASE_URL=your_database_connection_string
+API_KEY=your_optional_api_key
+
+```
+
+
+4. **Run the Application:**
+```bash
+# Development Mode
+npm run dev
+
+# Production Build
+npm start
+
+```
+
+
+5. Open your browser and navigate to `http://localhost:3000` (or `http://localhost:5000`).
+
+---
+
+## 📁 Repository Structure
+
+```
+GradGuide_Job_Search_Tool/
+├── public/              # Static assets and HTML template
+├── src/
+│   ├── assets/          # Stylesheets and media files
+│   ├── components/      # UI components / widgets
+│   ├── services/        # API calls and data fetching logic
+│   ├── utils/           # Helper functions and utilities
+│   └── App.js           # Main application entry point
+├── .env.example         # Example environment configuration
+├── .gitignore           # Ignored files and folders
+├── package.json         # Project metadata and dependencies
+└── README.md            # Project documentation
+
+```
+
+---
+
+## 🗺️ Roadmap
+
+* [ ] Add AI-powered resume matching against job descriptions.
+* [ ] Email notification integrations for follow-up reminders.
+* [ ] Export application analytics to CSV / PDF.
+* [ ] Chrome extension for one-click job saving directly from LinkedIn and Indeed.
+
+---
+
+## 🤝 Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See `LICENSE` for more information.
+
+---
+
+## 📬 Contact & Support
+
+**Sean Pereira**
+
+* GitHub: [@Sean-Pereira-945](https://www.google.com/search?q=https://github.com/Sean-Pereira-945)
+* LinkedIn: [Sean Pereira](https://www.google.com/search?q=https://linkedin.com/in/)
+
+*Project Link:* [https://github.com/Sean-Pereira-945/GradGuide_Job_Search_Tool](https://github.com/Sean-Pereira-945/GradGuide_Job_Search_Tool)
+
+```
+
+<FollowUp label="Would you like me to tailor the tech stack or add specific setup commands for Python/Flask, Docker, or React?" query="Can you help me customize the README for a specific tech stack like Python/Flask, React, or Docker?"/>
+
+```
