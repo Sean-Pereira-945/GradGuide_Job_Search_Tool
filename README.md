@@ -1,6 +1,5 @@
 # GradGuide Job Discovery — Scraper Architecture & Feature Rationale
-
-##Demo Video Link : https://drive.google.com/file/d/1mjudfRJC_jzoQXjm8-InWvXTl4SY-iZ8/view?usp=sharing
+Demo Video Link : https://drive.google.com/file/d/1mjudfRJC_jzoQXjm8-InWvXTl4SY-iZ8/view?usp=sharing
 
 ## 1. How the Live Scraper Engine Works
 
